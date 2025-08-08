@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>look forward to</title>
+
+    <!-- Font setup (uses local Proxima Nova if available) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+
+    <style>
+      :root {
+        --bg: #000000;
+        --fg: #ffffff;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      /* Use small viewport units to account for mobile browser UI */
+      body {
+        margin: 0;
+        min-height: 100svh;
+        background: var(--bg);
+        color: var(--fg);
+        display: grid;
+        place-items: center;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Proxima Nova", "Proxima", "Montserrat", Arial, sans-serif;
+        font-weight: 600;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        text-align: center;
+        text-transform: lowercase;
+        /* Fluid type: ~5% smaller than previous: min 30.4px, scales with viewport, caps near 106.4px */
+        font-size: clamp(1.3rem, 1.5vw, 1.5rem);
+      }
+
+      /* Layered text for animated color blip inside letters */
+      .headline { position: relative; display: inline-block; }
+      .text-base { position: relative; z-index: 1; color: #ffffff; }
+      .text-blip {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        color: transparent;
+        /* blip sweep across with richer hues */
+        background-image: linear-gradient(
+          90deg,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,0) 32%,
+          rgba(124, 185, 255, 0.9) 37%,
+          rgba(148, 124, 255, 0.9) 42%,
+          rgba(255, 124, 220, 0.9) 48%,
+          rgba(124, 255, 210, 0.9) 52%,
+          rgba(255,255,255,0) 60%,
+          rgba(255,255,255,0) 100%
+        );
+        background-size: 220% 100%;
+        background-position: -30% 50%;
+        background-repeat: no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        will-change: background-position;
+        animation: blip-move 2.5s linear infinite;
+       
+        pointer-events: none;
+      }
+      @keyframes blip-move {
+        0%   { background-position: -30% 50%; }
+        10%  { background-position: -30% 50%; } /* brief pause at left end */
+        60%  { background-position: 130% 50%; }
+        100% { background-position: 130% 50%; } /* hold 40% at right end */
+      }
+
+      /* sheen layer only for subtle motion */
+      .headline::after {
+        content: attr(aria-label);
+        position: absolute;
+        inset: 0;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        pointer-events: none;
+      }
+      /* subtle rotating sheen */
+      .headline::after {
+        z-index: 3;
+        background-image: conic-gradient(from 0deg at 50% 50%, rgba(255, 255, 255, 0) 0deg, rgba(200, 220, 255, 0.28) 12deg, rgba(255, 255, 255, 0) 24deg);
+        background-size: 150% 150%;
+        background-position: 50% 50%;
+        transform-origin: 50% 50%;
+        will-change: transform;
+        transform: translateZ(0);
+        animation: sheen-rotate 10s linear infinite;
+      }
+      @keyframes sheen-rotate {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Respect reduced motion preferences (future-proof if adding effects) */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="headline" aria-label="look forward to">
+      <span class="text-base">look forward to</span>
+      <span class="text-blip">look forward to</span>
+    </h1>
+  </body>
+  
+</html>
+
+
